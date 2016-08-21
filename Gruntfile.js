@@ -28,6 +28,29 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    //WhatIsThis
+    aws: grunt.file.readJSON('aws-keys.json'),
+    aws_s3: {
+      options: {
+        accessKeyId: '<%= aws.AWSAccessKeyId %>',
+        secretAccessKey: '<%= aws.AWSSecretKey %>'
+      },
+      dist: {
+        options: {
+          bucket: 'successfulstudent'
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'dist/',
+            src: [ '**' ],
+            dest: '/'
+          }
+        ]
+      }
+    },
+
+
     // Project settings
     yeoman: appConfig,
 
@@ -220,7 +243,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -427,6 +450,9 @@ module.exports = function (grunt) {
   });
 
 
+  //HELP
+  grunt.registerTask('goaway', 'aws_s3:dist');
+
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -446,6 +472,7 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
+
 
   grunt.registerTask('test', [
     'clean:server',
@@ -480,4 +507,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.loadNpmTasks('grunt-aws-s3');
 };
