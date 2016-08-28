@@ -29,16 +29,12 @@ module.exports = function (grunt) {
   grunt.initConfig({
 
     //WhatIsThis
-    aws: grunt.file.readJSON('aws-keys.json'),
     aws_s3: {
       options: {
-        accessKeyId: '<%= aws.AWSAccessKeyId %>',
-        secretAccessKey: '<%= aws.AWSSecretKey %>'
+        bucket: 'successfulstudent',
+        access: 'public-read'
       },
       dist: {
-        options: {
-          bucket: 'successfulstudent'
-        },
         files: [
           {
             expand: true,
@@ -451,7 +447,10 @@ module.exports = function (grunt) {
 
 
   //HELP
-  grunt.registerTask('goaway', 'aws_s3:dist');
+  grunt.registerTask('goaway', [
+    'build',
+    'aws_s3:dist'
+    ]);
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {

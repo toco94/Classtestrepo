@@ -1,0 +1,16 @@
+var AWS = require('aws-sdk');
+var s3 = new AWS.S3();
+
+var params = {
+   Bucket: 'successfulstudent',
+   Key : index.html 
+};
+
+s3.headObject(params, function (error, response) {
+   if(error) {
+      context.fail();
+   } else {
+       var date = response.LastModified; //Last modified date
+       context.done(null,date);
+   }
+});

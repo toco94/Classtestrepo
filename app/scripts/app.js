@@ -39,6 +39,11 @@ angular
         controller: 'TeamCtrl',
         controllerAs: 'team'
       })
+      .when('/tarea2', {
+        templateUrl: 'views/tarea2.html',
+        controller: 'Tarea2Ctrl',
+        controllerAs: 'tarea2'
+      })
       .otherwise({
         redirectTo: '/'
       });

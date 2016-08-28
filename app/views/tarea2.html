@@ -1,0 +1,220 @@
+<p><strong>Every answer of these questions should be in your S3 website with a link to the code in GitHub.</strong></p>
+<p><strong>&nbsp;</strong></p>
+<ol>
+  <li><strong> Automate the deployment of your web site using Grunt. 15 points.</strong></li>
+</ol>
+<p>Made some changes to past one. Most notably I&rsquo;m letting my keys to be the default ones in here:</p>
+<pre><code>
+<p>aws_s3: {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; options: {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bucket: 'successfulstudent',</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; access: 'public-read'</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; },</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dist: {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; files: [</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; expand: true,</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cwd: 'dist/',</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; src: [ '**' ],</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dest: '/'</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; }</p>
+</code></pre>
+<p>And also included the build task inside the deployment for convenience:</p>
+<pre><code>
+<p>grunt.registerTask('goaway', [</p>
+<p>&nbsp;&nbsp;&nbsp; 'build',</p>
+<p>&nbsp;&nbsp;&nbsp; 'aws_s3:dist'</p>
+<p>&nbsp;&nbsp;&nbsp; ]);</p>
+</code></pre>
+<p>Might as well make a secondary one that excludes the build part in case I only want to upload the current build:</p>
+<p>grunt.registerTask('goaway2', 'aws_s3:dist');</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<ol start="2">
+  <li><strong> Create a Hello World in NodeJs and create a tutorial about it. 15 points.</strong></li>
+</ol>
+<p>Super Easy!</p>
+<p>Step 1:</p>
+<p>Open up your terminal</p>
+<p>Step 2:</p>
+<p>Create a text file (you can use vi HelloWorld to create a text file called HelloWorld)</p>
+<p>Step 3:</p>
+<p>Type in:</p>
+<p>console.log(&ldquo;Hello World&rdquo;);</p>
+<p>And save it (you can use I to insert in vi and then press esc and :wq to exit and save text file)</p>
+<p>Step 4:</p>
+<p>In the terminal in the directory where your HelloWorld file is, input: nodejs HelloWorld</p>
+<p>Step 5:</p>
+<p>The terminal should have replied with a Hello World</p>
+<p>Step 6 (?):</p>
+<p>You can make a link (ln) for node so you can use node &ldquo;HelloWorld&rdquo; (for simplifying stuff)</p>
+<p>&nbsp;</p>
+<ol start="3">
+  <li><strong> Install the aws sdk for nodejs and create a tutorial about it. 15 points.</strong></li>
+</ol>
+<p>Simple way:</p>
+<p>Step 1:</p>
+<p>Go onto your project&rsquo;s directory on terminal</p>
+<p>Step 2:</p>
+<p>On terminal, type: npm install aws-sdk</p>
+<p>(Note: must have the Node Package Manager already installed)</p>
+<p>Optional: use &ldquo;npm install aws-sdk --save-dev&rdquo; &nbsp;to add the aws-sdk package into your project&rsquo;s dependencies. (So next time a simple npm install will install it in case it&rsquo;s missing)</p>
+<p>Step 3:</p>
+<p>Let the installing proceed and you are done</p>
+<p>&nbsp;</p>
+<ol start="4">
+  <li><strong> Create a code in NodeJs that will tell you the version/date of your website in S3. 15 points.</strong></li>
+</ol>
+<p>&nbsp;</p>
+<pre><code>
+<p>//Initializing aws-sdk</p>
+<p>var AWS = require('aws-sdk');</p>
+<p>var s3 = new AWS.S3();</p>
+<p>//Create a parameters var with the Bucket name and the file we want to know the date of</p>
+<p>var params = {</p>
+<p>&nbsp; Bucket: 'successfulstudent',</p>
+<p>&nbsp; Prefix: 'index.html',</p>
+<p>};</p>
+<p>//Use the listObjectVersions and print only the Key (the file name) and its last modified date</p>
+<p>s3.listObjectVersions(params, function(err, data) {</p>
+<p>&nbsp; if (err) console.log(err, err.stack);</p>
+<p>&nbsp; else&nbsp;&nbsp;&nbsp;&nbsp; console.log('Version date: ' + data.Versions[0].Key + ' ' + data.Versions[0].LastModified);</p>
+<p>});</p>
+<p>//Porras reminded me the array thingies [] to access the Versions array</p>
+</code></pre>
+<p>&nbsp;</p>
+<ol start="5">
+  <li><strong> Read and explain the post about Microservices Trade-Offs by Martin Fowler</strong></li>
+</ol>
+<p><strong>(http://martinfowler.com/articles/microservice-trade-offs.html). 15 points.</strong></p>
+<p>The post itself talks about the existing tradeoffs that exist between the monolithic and microservices architectures. It mentions 3 main pros and cons for the microservices which are then compared with how well these are handled by monolithic systems.</p>
+<p>The pros are pretty straightforward, one is the technological diversity that microservices can have since each microservice is independent and they all can be based on different programming languages and use whatever library helps them to do their job, which in a monolithic system you are stuck on whatever language you started on and are limited to the libraries you can use and be mindful of conflicts.</p>
+<p>Then there&rsquo;s the strong module boundaries, which simply put it&rsquo;s not really true in a sense, it&rsquo;s just that having already everything working separately makes it easier and doesn&rsquo;t allow for cutting edges like in a monolith where you can easily break a modular structure to build something faster, at the obvious cost of ruining the structure and creating a snowballing mess.</p>
+<p>Then there&rsquo;s the pro of independent deployment which is pretty simple, the whole system being separated in simple independent services allows for independent deployment with low risk for failures.</p>
+<p>Then there&rsquo;s the cons, which are kind of derived from each other. One of the problems with microservices is the complexity that comes from it being a distributed system, which involves performance and reliability issues because of the slowness and possible failures of remote calls. Then again, microservices are designed for failure which helps on this area, and also it&rsquo;s not like monolithic systems can&rsquo;t have this problems too.</p>
+<p>Then there&rsquo;s the inconsistencies that are common in microservices, them using decentralized data management implies that not all of the microservices will be on the same train all of the time, requiring time for all of them to have the same information. But then again, it&rsquo;s not like this doesn&rsquo;t happen in monoliths (it is less frequent though).</p>
+<p>Probably one of the real cons here though, is the operational complexity. Sure, splitting into several services makes each of them easier to understand and modify them without much of a problem, but now we have a problem involving the connections existing between microservices that only exist in this architecture and gets only more complex the more you split the system up in microservices.</p>
+<p>For last, it&rsquo;s important to realize that this is just separating black from white, and most of the time systems are in a gray area, meaning that this pros and cons are relative to the systems.</p>
+<p>&nbsp;</p>
+<ol start="6">
+  <li><strong> Create a comparison table between AWS, Azure and Google Cloud. 15 points.</strong></li>
+</ol>
+<table>
+  <tbody>
+  <tr>
+    <td width="156">
+      <p>&nbsp;</p>
+    </td>
+    <td width="156">
+      <p>AWS</p>
+    </td>
+    <td width="156">
+      <p>Azure</p>
+    </td>
+    <td width="156">
+      <p>Google Cloud</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>Launched:</p>
+    </td>
+    <td width="156">
+      <p>2006</p>
+    </td>
+    <td width="156">
+      <p>2010</p>
+    </td>
+    <td width="156">
+      <p>2010</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>Billing Models:</p>
+    </td>
+    <td width="156">
+      <p>Free Tier, On-Demand, Reserved, Spot, Dedicated</p>
+    </td>
+    <td width="156">
+      <p>Free Trial, On-Demand, Short Term Commmitments</p>
+    </td>
+    <td width="156">
+      <p>Free Trial, On-Demand. Sustained Use</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>Server locations (Simplified)</p>
+    </td>
+    <td width="156">
+      <p>US, South America, Europe West, Oceania, South Asia</p>
+    </td>
+    <td width="156">
+      <p>US, South America, Europe West, Oceania, South Asia</p>
+    </td>
+    <td width="156">
+      <p>US, Europe West, South Asia</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>Relational Databases</p>
+    </td>
+    <td width="156">
+      <p>RDS</p>
+    </td>
+    <td width="156">
+      <p>Relational DBs</p>
+    </td>
+    <td width="156">
+      <p>Google Cloud SQL</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>Archiving</p>
+    </td>
+    <td width="156">
+      <p>Glacier</p>
+    </td>
+    <td width="156">
+      <p>&nbsp;</p>
+    </td>
+    <td width="156">
+      <p>Nearline</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="156">
+      <p>NoSQL</p>
+    </td>
+    <td width="156">
+      <p>DynamoDB, EMR, Kinesis, Redshift</p>
+    </td>
+    <td width="156">
+      <p>Windows Azure Table, HDInsight</p>
+    </td>
+    <td width="156">
+      <p>Cloud Datastore, Big Query, Hadoop</p>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<p><strong>&nbsp;</strong></p>
+<ol start="7">
+  <li><strong> Read at least 5 sections of Seth Godin&rsquo;s Manifesto: &ldquo;Stop Stealing Dreams&rdquo; and tell me what you think about it. 10 points.</strong></li>
+</ol>
+<p>I read these ones for no particular reason:</p>
+<ol start="19">
+  <li>Dreams are difficult to build and easy to destroy</li>
+  <li>Life in the post-institutional future</li>
+  <li>Two bumper stickers</li>
+  <li>The connection revolution is upon us</li>
+  <li>And yet we isolate students instead of connecting them</li>
+</ol>
+<p>Interesting way to talk about the many issues of current education through school. I don&rsquo;t know what else to say about it, I think that what I read can be applied to most schools. In the 5 sections I read it&rsquo;s basically a &ldquo;the current role of schools is not the one that we need, we need them to adapt to the current situation, yet we look at a school as something that&rsquo;s already structured and we are to go by its rules and not as something that we are supposed to structure and that should meet our needs&rdquo;. Just my opinion.</p>
+<p><em>&nbsp;</em></p>

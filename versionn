@@ -1,0 +1,12 @@
+var AWS = require('aws-sdk');
+var s3 = new AWS.S3();
+
+
+var params = {
+  Bucket: 'successfulstudent',
+	Prefix: 'index.html', 
+};
+s3.listObjectVersions(params, function(err, data) {
+  if (err) console.log(err, err.stack);
+  else     console.log('Version date: ' + data.Versions[0].Key + ' ' + data.Versions[0].LastModified);    
+});
