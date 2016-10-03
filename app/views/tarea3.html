@@ -1,0 +1,105 @@
+<p><strong>Assignment 3</strong></p>
+<p><strong>CC116 Cloud Computing</strong></p>
+<p><strong>Every answer of these questions should be in your S3 website with a link to the code in <span style="text-decoration: line-through;">CodeCommit</span> GitHub.</strong></p>
+<ol>
+  <li><strong> Create a NodeJS script that will do the following:</strong></li>
+</ol>
+<ul>
+  <li><strong> Download and Image from S3.</strong></li>
+  <li><strong> Check if the metadata key &ldquo;Move&rdquo; of the image is true.</strong></li>
+  <li><strong> If true, upload the image to s3://cc116-assignment3/{MATRICULA}/</strong></li>
+</ul>
+<p><strong>image.png</strong></p>
+<ul>
+  <li><strong> 20 points.</strong></li>
+</ul>
+<p>var AWS = require('aws-sdk');</p>
+<p>var s3 = new AWS.S3();</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>var file = require('fs').createWriteStream('squid.jpg');</p>
+<p>s3.getObject({</p>
+<p>&nbsp; Bucket: 'successfulstudent',</p>
+<p>&nbsp; Key: 'squid.jpg'}).createReadStream().pipe(file);</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>s3.getObject({</p>
+<p>&nbsp; Bucket: 'successfulstudent',</p>
+<p>&nbsp;&nbsp;&nbsp; Key: 'squid.jpg'},</p>
+<p>&nbsp; function(error, data){</p>
+<p>&nbsp;&nbsp;&nbsp; if(error){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(error)</p>
+<p>&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; else{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(data.Metadata.move == 'true'){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var stream = require('fs').createReadStream('squid.jpg');</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s3.upload({</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bucket: 'cc116-assignment3',</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Key: '18183/squid.jpg',</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Body: stream,</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }, function(error, data){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(error){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(error)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("it works");</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; })</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log("metadata move is not true");</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp; });</p>
+<p>&nbsp;</p>
+<ol start="2">
+  <li><strong> Create a NodeJS script that will do the following:</strong></li>
+</ol>
+<ul>
+  <li><strong> Will get the Nasa Astronomic Picture of the day.</strong></li>
+  <li><strong> Save the image in the local file system.</strong></li>
+  <li><strong> Print the title of the image.</strong></li>
+  <li><strong> 20 points.</strong></li>
+</ul>
+<p>var fs = require('fs')</p>
+<p>var request = require('request');</p>
+<p>var file = require('fs').createWriteStream('plswork.png');</p>
+<p>request(</p>
+<p>&nbsp; {url: 'http://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',</p>
+<p>&nbsp;&nbsp;&nbsp; json: true},</p>
+<p>&nbsp;&nbsp;&nbsp; function(error, res, json){</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(error)</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(error);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else{</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request(json.url).pipe(file);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; console.log(json.title);</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</p>
+<p>});</p>
+<p><strong>&nbsp;</strong></p>
+<ol start="3">
+  <li><strong> Implement Google Analytics in your personal web site (All teams will do the same for their Final Project). 20 points.</strong></li>
+</ol>
+<p>Went to google analytics website, registered, got a tracking ID, google gave me a script in isogram, tried it, didn&rsquo;t work, wasted hours on it. Checked someone else and asked Ruth, she mentioned Angular intead of isogram, I face-palmed myself to sleep, still didn&rsquo;t work. I realize index already has that code, all I needed was to paste the Tracking-Id, now I feel worthless.</p>
+<p>Tracking id: 'UA-83632934-1'</p>
+<ol start="4">
+  <li><strong> Read and explain the following article by Martin Fowler: http://martinfowler.com/articles/richardsonMaturityModel.html. 20 points</strong></li>
+</ol>
+<p>The article explains the Richardson Maturity Model, a model that according to how REST services are implemented into a web service, it will be placed onto a certain Level, from 0 to 3, with 3 being the closest to the &ldquo;Glory of REST&rdquo; (good implementation).</p>
+<p>Level 0 is the most basic one, it basically just uses requests to send info back and forth while not using anything from the request (I&rsquo;d say that if you don&rsquo;t know much about using requests in your web service, you are most likely on this level).</p>
+<p>At Level 1, you are now thinking with resources, in which requests and responses are now meant for addressing resources (only part of the whole information) instead of addressing the whole thing.</p>
+<p>And now for Level 2, not only are you thinking with resources, but you are now also thinking about proper requests and responses (HTTP verbs), observing the differences between POST and PUT, GET and PUT plus utilizing different request responses like 409, 201, etc. to identify what sort of response you are getting.</p>
+<p>Finally at level 3, you are now thinking about presenting options with hypermedia controls, giving responses the extra elements of resources that we can next manipulate with their corresponding URI, so now you know what you can do even if you don&rsquo;t know the whole system by heart, making it look self-documented.</p>
+<p><strong>&nbsp;</strong></p>
+<ol start="5">
+  <li><strong> Explain why cloud computing is important. 10 points.</strong></li>
+</ol>
+<p>Things are as important as we make them out to be. In the case of cloud computing, it&rsquo;s a fitting technology for a world where we have a desire for accessing information from any place, at any time. With the need to analyze tons (or whatever is bigger than a ton) of data, enough for a single computer to burn out before it even analyzes a small percent of it, cloud computing comes to solve this with the processing power that comes from splitting the job to servers that are ready to handle the job.</p>
+<p>Simply put, cloud computing is important because it&rsquo;s a good solution to computing problems, long are gone the days of a single computer handling a popular website or having to be near the server to access it.</p>
+<p><strong>&nbsp;</strong></p>
+<ol start="6">
+  <li><strong> Explain what would like to change in this class and why. 10 points.</strong></li>
+</ol>
+<p>I don&rsquo;t really think I would change anything, I like the class a lot the way it is. Might as well say what I like of it instead so that doesn&rsquo;t change.</p>
+<p>I like the way the teacher grabs our attention, making it a priority to pay attention. I like how the work at class relate to the homework and the test. I like how the slides are made. I like how the homework feels challenging without being stressful or overcomplicated. I like how it feels like there&rsquo;s no redundancy in the activities that we realize for this class. I like having a cool teacher that cares about what we learn.</p>

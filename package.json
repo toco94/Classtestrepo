@@ -47,7 +47,10 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "file-system": "^2.2.1",
+    "request": "^2.74.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toco94/Classtestrepo.git"
