@@ -1,0 +1,11 @@
+{
+  "Records":[
+  {
+  "Sns":{
+    "Message": {
+      "commits": [
+        {
+          "message": "Is empty"
+        }]
+    }}}]
+}
