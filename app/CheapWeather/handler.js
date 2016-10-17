@@ -1,5 +1,5 @@
 'use strict';
-var wHelper = require('../lib/WeatherHelper.js');
+var wHelper = require('../../.././WeatherHelper.js');
 
 module.exports.handler = function(event, context, cb) {
   wHelper.GetWeather(event.city, function (err, data){

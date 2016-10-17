@@ -16,16 +16,17 @@ angular.module('succesfulstudentApp')
     ];
 
     $scope.sendToSlack = function(){
-      var data = {message: $scope.message};
-      var url = "https://685ci3h4f1.execute-api.us-east-1.amazonaws.com/dev/SlackMsgBot";
+      $scope.success = "No longer operational"
+      //var data = {message: $scope.message};
+      //var url = "https://685ci3h4f1.execute-api.us-east-1.amazonaws.com/dev/SlackMsgBot";
 
-      $http.put(url, data)
-        .success(function(data){
-          $scope.success = "Sent I think:)";
-        })
-        .error(function(error){
-          $scope.success(error);
-        })
+      //$http.put(url, data)
+        //.success(function(data){
+          //$scope.success = "Sent I think:)";
+        //})
+        //.error(function(error){
+          //$scope.success(error);
+        //})
     };
 
 

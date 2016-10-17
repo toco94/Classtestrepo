@@ -1,14 +1,13 @@
 'use strict';
-var wHelper = require('../../.././WeatherHelper.js');
+var DynHelper = require('../lib/DynamoHelper.js');
 
 module.exports.handler = function(event, context, cb) {
-  wHelper.GetMultiWeather(event.cities, function (err, data){
+  DynHelper.WeatherAvgLoop(function (err, data){
     if(err){
       console.log(err);
     }
     else{
       cb(null, data);
     }
-
   });
 };

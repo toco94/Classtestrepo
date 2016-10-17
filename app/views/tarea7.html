@@ -1,0 +1,14 @@
+<p>Assignment 7<br />CC116 Cloud Computing<br />Every answer of these questions should be in your S3website with a link to the code in GitHub.</p>
+<p>1. Create a module inside the web app to get the average temperature by city. This<br />includes:<br />&bull; Modify single weather lambda function to save temp in DynamoDB.<br />&bull; Create lambda function to get all temperatures from DynamoDB and<br />calculate the average.<br />&bull; Create an API Gateway end point integrated with the average<br />temperature lambda.<br />&bull; Modify your web app to get the average temperatures.<br />&bull; 50 points.</p>
+<p><br />2. Add security to the average temperatures end point (Implement Custom<br />Authorizers).<br />&bull; 50 points.</p>
+<br />
+<p>Get Weather is there just for making sure the averages worked. The Login and Unlogin button is there for showing that the Weather Average can only be used when we give the appropiate token to the header</p>
+
+<p>Cities: <input type="text" ng-model="cities">
+<input type="button" ng-click="getWeather()" value="Get Weather">
+<input type="button" ng-click="getWeatherAvgs()" value="Get Weather Averages">
+<input type="button" ng-click="valid(true)" value="Login">
+<input type="button" ng-click="valid(false)" value="Unlog"></p>
+
+<p>Cities Temperatures: {{citiesWeather}}</p>
+<p>Averages: {{citiesAvgs}}</p>
